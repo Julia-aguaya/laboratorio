@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratorio EFR - Presentacion por Slides</title>
+<style>
+  :root {
+    --bg: #edf2f4;
+    --surface: rgba(255, 255, 255, 0.78);
+    --panel: #ffffff;
+    --panel-2: #f7fafb;
+    --ink: #15252d;
+    --muted: #5f737d;
+    --line: rgba(21, 37, 45, 0.12);
+    --line-strong: rgba(21, 37, 45, 0.24);
+    --petrol: #163945;
+    --petrol-2: #265766;
+    --teal: #2f7f78;
+    --gold: #c89b47;
+    --gold-soft: rgba(200, 155, 71, 0.16);
+    --teal-soft: rgba(47, 127, 120, 0.14);
+    --petrol-soft: rgba(22, 57, 69, 0.09);
+    --shadow: 0 24px 60px rgba(17, 37, 45, 0.14);
+    --radius-xl: 32px;
+    --radius-lg: 22px;
+    --radius-md: 16px;
+    --content: min(1200px, calc(100vw - 48px));
+    --serif: "Georgia", "Times New Roman", serif;
+    --sans: "Trebuchet MS", "Segoe UI", sans-serif;
+    --mono: "Consolas", "Courier New", monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(200, 155, 71, 0.18), transparent 22%),
+      radial-gradient(circle at top right, rgba(47, 127, 120, 0.14), transparent 20%),
+      linear-gradient(180deg, #f8fbfc 0%, #e7edf0 100%);
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .topbar {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: var(--content);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 18px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.86);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 16px 36px rgba(17, 37, 45, 0.08);
+    z-index: 20;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .brand-mark {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, var(--petrol), var(--petrol-2));
+    color: #fff;
+    flex: 0 0 auto;
+  }
+
+  .brand h1,
+  .slide h2,
+  .panel h3,
+  .metric strong,
+  .diagram-title {
+    margin: 0;
+  }
+
+  .brand h1 {
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .brand p,
+  .chip,
+  .eyebrow,
+  .kicker,
+  .meta,
+  .bullet-list li,
+  .mini,
+  .legend,
+  .footer-note {
+    color: var(--muted);
+  }
+
+  .brand p {
+    margin: 2px 0 0;
+    font-size: 12px;
+  }
+
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .chip {
+    padding: 9px 12px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    font-size: 12px;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  }
+
+  .chip:hover,
+  .chip:focus-visible {
+    transform: translateY(-1px);
+    border-color: var(--line-strong);
+    background: #fbfdfd;
+  }
+
+  .slides {
+    height: 100vh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+  }
+
+  .slide {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: grid;
+    align-items: center;
+    padding: 104px 0 40px;
+  }
+
+  .slide-shell {
+    width: var(--content);
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .slide-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--petrol), var(--teal), var(--gold));
+  }
+
+  .slide-grid {
+    display: grid;
+    grid-template-columns: 1.04fr 0.96fr;
+    gap: 24px;
+    padding: 38px;
+  }
+
+  .slide-grid.single {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-card,
+  .panel,
+  .metric,
+  .callout,
+  .stage,
+  .paper,
+  .value-card,
+  .quote,
+  .diagram,
+  .timeline-item,
+  .result-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .hero-card,
+  .panel,
+  .diagram,
+  .quote,
+  .callout,
+  .result-card {
+    padding: 28px;
+  }
+
+  .metric,
+  .stage,
+  .paper,
+  .value-card,
+  .timeline-item {
+    padding: 18px;
+  }
+
+  .eyebrow,
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.84);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .kicker {
+    background: var(--petrol-soft);
+    color: var(--petrol);
+    border-color: rgba(22, 57, 69, 0.12);
+  }
+
+  .hero-card {
+    background:
+      radial-gradient(circle at top right, rgba(200, 155, 71, 0.18), transparent 28%),
+      linear-gradient(140deg, rgba(18, 48, 57, 0.96), rgba(24, 67, 79, 0.94));
+    color: #eff6f8;
+    min-height: 520px;
+  }
+
+  .hero-card .eyebrow,
+  .hero-card .meta,
+  .hero-card .legend,
+  .hero-card .bullet-list li {
+    color: rgba(239, 246, 248, 0.76);
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .slide h2 {
+    font-family: var(--serif);
+    font-size: clamp(34px, 5vw, 58px);
+    line-height: 1.02;
+    margin-top: 16px;
+    max-width: 13ch;
+  }
+
+  .lead {
+    margin: 16px 0 0;
+    font-size: 17px;
+    line-height: 1.75;
+    max-width: 58ch;
+  }
+
+  .hero-card .lead { color: rgba(239, 246, 248, 0.86); }
+
+  .stats,
+  .mini-grid,
+  .module-grid,
+  .paper-grid,
+  .value-grid,
+  .result-grid,
+  .timeline,
+  .two-col {
+    display: grid;
+    gap: 16px;
+  }
+
+  .stats { grid-template-columns: repeat(3, 1fr); margin-top: 24px; }
+  .mini-grid { grid-template-columns: repeat(2, 1fr); }
+  .module-grid { grid-template-columns: repeat(2, 1fr); }
+  .paper-grid { grid-template-columns: repeat(2, 1fr); }
+  .value-grid { grid-template-columns: repeat(3, 1fr); }
+  .result-grid { grid-template-columns: 1.1fr 0.9fr; }
+  .timeline { margin-top: 18px; }
+  .two-col { grid-template-columns: repeat(2, 1fr); }
+
+  .concept-grid,
+  .focus-grid {
+    display: grid;
+    gap: 18px;
+  }
+
+  .concept-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 32px; }
+  .focus-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; }
+
+  .concept-card {
+    padding: 24px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .panel .concept-card {
+    border-color: var(--line);
+    background: linear-gradient(180deg, #fbfdfe, #f4f8f9);
+  }
+
+  .concept-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 18px;
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--petrol);
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .panel .concept-icon {
+    background: var(--petrol-soft);
+    border-color: rgba(22, 57, 69, 0.08);
+  }
+
+  .concept-card strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 20px;
+  }
+
+  .concept-card p,
+  .focus-card p {
+    margin: 0;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  .focus-card {
+    padding: 24px;
+    border-radius: 22px;
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, #fbfdfe, #f4f8f9);
+  }
+
+  .focus-card strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 19px;
+    color: var(--petrol);
+  }
+
+  .flow-large {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 26px;
+    align-items: center;
+  }
+
+  .flow-large .flow-step,
+  .flow-large .tag {
+    padding: 14px 18px;
+    font-size: 14px;
+  }
+
+  .metric strong,
+  .value-card strong,
+  .paper strong,
+  .timeline-item strong,
+  .callout strong,
+  .panel h3,
+  .result-card h3,
+  .diagram-title {
+    display: block;
+    font-size: 20px;
+    color: var(--petrol);
+  }
+
+  .hero-card .metric strong,
+  .hero-card .diagram-title,
+  .hero-card h3 {
+    color: #eff6f8;
+  }
+
+  .metric strong {
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .panel h3,
+  .result-card h3,
+  .diagram-title {
+    margin-bottom: 10px;
+  }
+
+  .meta,
+  .mini,
+  .legend,
+  .bullet-list li,
+  .timeline-item p,
+  .paper p,
+  .value-card p,
+  .callout p,
+  .panel p,
+  .result-card p {
+    margin: 0;
+    line-height: 1.65;
+    font-size: 14px;
+  }
+
+  .bullet-list {
+    margin: 18px 0 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 10px;
+  }
+
+  .diagram {
+    background: linear-gradient(180deg, #fbfdfe, #f2f7f8);
+  }
+
+  .diagram.dark {
+    background: linear-gradient(180deg, #173742, #11313a);
+    border-color: rgba(255, 255, 255, 0.06);
+    color: #eef6f8;
+  }
+
+  .diagram.dark .diagram-title,
+  .diagram.dark .legend,
+  .diagram.dark .mini {
+    color: rgba(238, 246, 248, 0.84);
+  }
+
+  .legend { margin-top: 12px; }
+  .mini { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+    align-items: center;
+  }
+
+  .flow-step,
+  .tag {
+    border-radius: 999px;
+    padding: 10px 14px;
+    font-size: 13px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+  }
+
+  .arrow { color: rgba(21, 37, 45, 0.38); font-size: 18px; }
+
+  .hero-card .flow-step,
+  .hero-card .tag {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #eff6f8;
+  }
+
+  .hero-card .arrow { color: rgba(255, 255, 255, 0.54); }
+
+  .stack {
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .stage {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .stage-index {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: var(--petrol-soft);
+    color: var(--petrol);
+    font-family: var(--mono);
+    font-size: 14px;
+  }
+
+  .quote {
+    background: linear-gradient(180deg, rgba(200, 155, 71, 0.08), rgba(255, 255, 255, 0.96));
+  }
+
+  .quote-mark {
+    font-family: var(--serif);
+    font-size: 44px;
+    color: rgba(22, 57, 69, 0.24);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .progress {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .progress span {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    flex: 1;
+  }
+
+  .progress span.active { background: var(--gold); }
+
+  .footer-note {
+    margin-top: 16px;
+    font-size: 12px;
+    text-align: right;
+  }
+
+  svg { width: 100%; height: auto; display: block; }
+
+  @media (max-width: 1080px) {
+    .slide-grid,
+    .slide-grid.single,
+    .result-grid,
+    .module-grid,
+    .paper-grid,
+    .value-grid,
+    .stats,
+    .mini-grid,
+    .two-col,
+    .concept-grid,
+    .focus-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .topbar {
+      width: min(100vw - 24px, 1200px);
+      border-radius: 28px;
+      align-items: flex-start;
+    }
+
+    .nav { justify-content: flex-start; }
+  }
+
+  @media (max-width: 760px) {
+    .slides { scroll-snap-type: y proximity; }
+    .topbar {
+      position: static;
+      transform: none;
+      width: min(100vw - 20px, 1200px);
+      margin: 10px auto 0;
+      flex-direction: column;
+    }
+
+    .slide {
+      min-height: auto;
+      padding: 16px 0 24px;
+    }
+
+    .slide-shell { width: min(100vw - 20px, 1200px); }
+    .slide-grid { padding: 20px; }
+    .hero-card, .panel, .diagram, .quote, .callout, .result-card { padding: 20px; }
+    .slide h2 { font-size: 34px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+  <header class="topbar" aria-label="Navegacion principal de la presentacion">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64" role="img" aria-label="Marca del proyecto">
+          <circle cx="20" cy="20" r="7" fill="#c89b47"></circle>
+          <circle cx="44" cy="20" r="7" fill="#87c4bc"></circle>
+          <circle cx="32" cy="42" r="8" fill="#ffffff"></circle>
+          <path d="M20 20 L32 42 L44 20" fill="none" stroke="#ffffff" stroke-width="3"></path>
+        </svg>
+      </div>
+      <div>
+        <h1>Laboratorio EFR</h1>
+        <p>Presentacion didactica para evaluacion academica</p>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Slides">
+      <a class="chip" href="#slide-1">01 Portada</a>
+      <a class="chip" href="#slide-2">02 Problema</a>
+      <a class="chip" href="#slide-3">03 Objetivo</a>
+      <a class="chip" href="#slide-4">04 Flujo</a>
+      <a class="chip" href="#slide-5">05 Modulos</a>
+      <a class="chip" href="#slide-6">06 Simulacion</a>
+      <a class="chip" href="#slide-7">07 Resultados</a>
+      <a class="chip" href="#slide-8">08 IA y papers</a>
+      <a class="chip" href="#slide-9">09 Valor academico</a>
+    </nav>
+  </header>
+
+  <main class="slides">
+    <section class="slide" id="slide-1" aria-labelledby="titulo-portada">
+      <div class="slide-shell">
+        <div class="slide-grid">
+          <article class="hero-card">
+            <div class="eyebrow">Proyecto de investigacion aplicada</div>
+            <h2 id="titulo-portada">EFR: del estimulo a la respuesta neural.</h2>
+            <p class="lead">
+              La presentacion resume tres ideas clave: que sonido se entrega, como oye el sujeto y que respuesta temporal devuelve el sistema auditivo.
+            </p>
+
+            <div class="concept-grid" aria-label="Conceptos base de la presentacion">
+              <div class="concept-card">
+                <div class="concept-icon">S</div>
+                <strong>Estimulo</strong>
+                <p>Sonido controlado que activa el sistema auditivo.</p>
+              </div>
+              <div class="concept-card">
+                <div class="concept-icon">A</div>
+                <strong>Audiograma</strong>
+                <p>Mapa de umbrales que describe la audicion del sujeto.</p>
+              </div>
+              <div class="concept-card">
+                <div class="concept-icon">E</div>
+                <strong>EFR</strong>
+                <p>Respuesta neural que sigue la envolvente del estimulo.</p>
+              </div>
+            </div>
+
+            <div class="flow-large" aria-label="Ruta narrativa de la presentacion">
+              <span class="flow-step">Estimulo</span>
+              <span class="arrow">→</span>
+              <span class="flow-step">Audiograma</span>
+              <span class="arrow">→</span>
+              <span class="flow-step">EFR</span>
+            </div>
+
+            <div class="progress" aria-hidden="true">
+              <span class="active"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </article>
+
+          <aside class="panel">
+            <div class="kicker">Apertura</div>
+            <h3>Idea fuerza</h3>
+            <p class="meta">
+              No se muestra una app comercial. Se muestra una interfaz academica para explicar de forma clara la relacion entre entrada auditiva y respuesta EFR.
+            </p>
+
+            <div class="diagram dark" style="margin-top: 18px;">
+              <div class="mini">mapa general</div>
+              <div class="diagram-title">Tres conceptos, una lectura</div>
+              <svg viewBox="0 0 620 260" role="img" aria-label="Esquema conceptual de estimulo, audiograma y EFR">
+                <g fill="none" stroke-linejoin="round" stroke-linecap="round">
+                  <rect x="26" y="82" width="156" height="108" rx="26" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)"></rect>
+                  <rect x="232" y="82" width="156" height="108" rx="26" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)"></rect>
+                  <rect x="438" y="82" width="156" height="108" rx="26" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)"></rect>
+                  <path d="M182 136 H232" stroke="#c89b47" stroke-width="4"></path>
+                  <path d="M388 136 H438" stroke="#c89b47" stroke-width="4"></path>
+                </g>
+                <g fill="#eef6f8" font-family="Trebuchet MS, Segoe UI, sans-serif" font-size="16" text-anchor="middle">
+                  <text x="104" y="124">Estimulo</text>
+                  <text x="104" y="148">sonoro</text>
+                  <text x="310" y="124">Audiograma</text>
+                  <text x="310" y="148">del sujeto</text>
+                  <text x="516" y="124">Respuesta</text>
+                  <text x="516" y="148">EFR</text>
+                </g>
+              </svg>
+              <div class="legend">La defensa queda ordenada alrededor de una relacion causa-efecto simple.</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-2" aria-labelledby="titulo-problema">
+      <div class="slide-shell">
+        <div class="slide-grid">
+          <article class="panel">
+            <div class="eyebrow">Slide 02 · problema</div>
+            <h2 id="titulo-problema">El problema es leer juntas tres piezas que suelen quedar separadas.</h2>
+
+            <div class="focus-grid">
+              <div class="focus-card">
+                <strong>Estimulo</strong>
+                <p>Define que energia temporal recibe el sistema auditivo.</p>
+              </div>
+              <div class="focus-card">
+                <strong>Audiograma</strong>
+                <p>Define con que perfil auditivo se interpreta esa entrada.</p>
+              </div>
+              <div class="focus-card">
+                <strong>EFR</strong>
+                <p>Expresa cuan bien la respuesta neural sigue esa envolvente.</p>
+              </div>
+              <div class="focus-card">
+                <strong>Riesgo</strong>
+                <p>Si estas capas no conviven, la lectura del caso pierde claridad.</p>
+              </div>
+            </div>
+          </article>
+
+          <aside class="diagram">
+            <div class="mini">antes del sistema</div>
+            <div class="diagram-title">Lectura fragmentada</div>
+            <svg viewBox="0 0 620 340" role="img" aria-label="Diagrama de lectura fragmentada entre estimulo, audiograma y EFR">
+              <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="50" y="44" width="152" height="78" rx="22" fill="#f7fafb" stroke="#cad6db"></rect>
+                <rect x="236" y="44" width="152" height="78" rx="22" fill="#f7fafb" stroke="#cad6db"></rect>
+                <rect x="422" y="44" width="152" height="78" rx="22" fill="#f7fafb" stroke="#cad6db"></rect>
+                <rect x="144" y="200" width="332" height="90" rx="28" fill="#163945" stroke="#163945"></rect>
+                <path d="M126 122 C126 168, 194 184, 240 200" stroke="#c89b47" stroke-width="3" stroke-dasharray="8 8"></path>
+                <path d="M312 122 C312 168, 312 184, 312 200" stroke="#c89b47" stroke-width="3" stroke-dasharray="8 8"></path>
+                <path d="M498 122 C498 168, 430 184, 384 200" stroke="#c89b47" stroke-width="3" stroke-dasharray="8 8"></path>
+              </g>
+              <g fill="#163945" font-family="Trebuchet MS, Segoe UI, sans-serif" font-size="16" text-anchor="middle">
+                <text x="126" y="78">Estimulo</text>
+                <text x="126" y="100">sonoro</text>
+                <text x="312" y="78">Audiograma</text>
+                <text x="312" y="100">del sujeto</text>
+                <text x="498" y="78">Respuesta</text>
+                <text x="498" y="100">EFR</text>
+              </g>
+              <g fill="#eef6f8" font-family="Trebuchet MS, Segoe UI, sans-serif" font-size="18" text-anchor="middle">
+                <text x="310" y="238">Si estas piezas no se leen juntas</text>
+                <text x="310" y="264">la interpretacion del experimento se debilita</text>
+              </g>
+            </svg>
+            <div class="legend">El problema no es la falta de datos: es la falta de integracion.</div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-3" aria-labelledby="titulo-objetivo">
+      <div class="slide-shell">
+        <div class="slide-grid">
+          <article class="panel">
+            <div class="eyebrow">Slide 03 · objetivo</div>
+            <h2 id="titulo-objetivo">Objetivo: convertir una simulacion compleja en un proceso visible, auditable y explicable.</h2>
+            <p class="lead" style="color: var(--ink);">
+              La plataforma se piensa como una herramienta de trabajo para investigacion: recibe datos del sujeto,
+              parametriza un estimulo, ejecuta una simulacion y devuelve resultados que se pueden leer y discutir.
+            </p>
+
+            <div class="stack">
+              <div class="stage">
+                <div class="stage-index">01</div>
+                <div>
+                  <strong>Ordenar la entrada</strong>
+                  <p>Audiograma, metadata del caso y condiciones experimentales en una misma vista.</p>
+                </div>
+              </div>
+              <div class="stage">
+                <div class="stage-index">02</div>
+                <div>
+                  <strong>Hacer visible la simulacion</strong>
+                  <p>Que no sea una caja negra: cada parametro tiene que poder justificarse.</p>
+                </div>
+              </div>
+              <div class="stage">
+                <div class="stage-index">03</div>
+                <div>
+                  <strong>Facilitar la discusion academica</strong>
+                  <p>Resultados, referencias y lectura asistida en un formato util para exposicion y analisis.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <aside class="panel">
+            <div class="kicker">Definicion breve</div>
+            <h3>Que hace la propuesta</h3>
+            <div class="mini-grid" style="margin-top: 18px;">
+              <div class="metric">
+                <strong>Entrada</strong>
+                <p>Datos clinicos y perfil audiologico del sujeto.</p>
+              </div>
+              <div class="metric">
+                <strong>Control</strong>
+                <p>Configuracion reproducible del estimulo y del protocolo.</p>
+              </div>
+              <div class="metric">
+                <strong>Salida</strong>
+                <p>Curvas, metricas y comparaciones entre condiciones.</p>
+              </div>
+              <div class="metric">
+                <strong>Apoyo</strong>
+                <p>Lectura IA y enlace con literatura relevante.</p>
+              </div>
+            </div>
+
+            <div class="quote" style="margin-top: 18px;">
+              <div class="quote-mark">“</div>
+              <p>
+                El objetivo no es decorar resultados, sino construir una narrativa experimental clara desde la entrada hasta la conclusion.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-4" aria-labelledby="titulo-flujo">
+      <div class="slide-shell">
+        <div class="slide-grid single">
+          <article class="panel">
+            <div class="eyebrow">Slide 04 · flujo metodologico</div>
+            <h2 id="titulo-flujo" style="max-width: 15ch;">El flujo conecta audiograma, estimulo y EFR en una sola secuencia.</h2>
+            <p class="lead" style="color: var(--ink); max-width: 58ch;">
+              La lectura es simple: caracterizar al sujeto, definir el sonido y observar la respuesta temporal.
+            </p>
+
+            <div class="diagram" style="margin-top: 18px;">
+              <div class="mini">pipeline principal</div>
+              <div class="diagram-title">De entrada auditiva a respuesta EFR</div>
+              <svg viewBox="0 0 1120 280" role="img" aria-label="Pipeline principal del laboratorio EFR">
+                <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="26" y="88" width="180" height="100" rx="28" fill="#ffffff" stroke="#d5dfe3"></rect>
+                  <rect x="248" y="88" width="180" height="100" rx="28" fill="#ffffff" stroke="#d5dfe3"></rect>
+                  <rect x="470" y="88" width="180" height="100" rx="28" fill="#ffffff" stroke="#d5dfe3"></rect>
+                  <rect x="692" y="88" width="180" height="100" rx="28" fill="#ffffff" stroke="#d5dfe3"></rect>
+                  <rect x="914" y="88" width="180" height="100" rx="28" fill="#163945" stroke="#163945"></rect>
+                  <path d="M206 138 H248" stroke="#c89b47" stroke-width="5"></path>
+                  <path d="M428 138 H470" stroke="#c89b47" stroke-width="5"></path>
+                  <path d="M650 138 H692" stroke="#c89b47" stroke-width="5"></path>
+                  <path d="M872 138 H914" stroke="#c89b47" stroke-width="5"></path>
+                </g>
+                <g font-family="Trebuchet MS, Segoe UI, sans-serif" font-size="18" text-anchor="middle">
+                  <g fill="#163945">
+                    <text x="116" y="126">Audiograma</text>
+                    <text x="116" y="152">del caso</text>
+                    <text x="338" y="126">Estimulo</text>
+                    <text x="338" y="152">controlado</text>
+                    <text x="560" y="126">Modelo</text>
+                    <text x="560" y="152">auditivo</text>
+                    <text x="782" y="126">Respuesta</text>
+                    <text x="782" y="152">EFR</text>
+                  </g>
+                  <g fill="#eef6f8">
+                    <text x="1004" y="126">Lectura</text>
+                    <text x="1004" y="152">del caso</text>
+                  </g>
+                </g>
+              </svg>
+              <div class="legend">Conviene explicar causa y efecto, no detalles tecnicos finos.</div>
+            </div>
+
+            <div class="timeline">
+              <div class="timeline-item">
+                <strong>Paso 1 · Audiograma</strong>
+                <p>Resume el perfil auditivo del sujeto.</p>
+              </div>
+              <div class="timeline-item">
+                <strong>Paso 2 · Estimulo</strong>
+                <p>Fija frecuencia, intensidad y duracion.</p>
+              </div>
+              <div class="timeline-item">
+                <strong>Paso 3 · EFR</strong>
+                <p>Muestra la respuesta neural y habilita la interpretacion.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-5" aria-labelledby="titulo-modulos">
+      <div class="slide-shell">
+        <div class="slide-grid single">
+          <article class="panel">
+            <div class="eyebrow">Slide 05 · modulos</div>
+            <h2 id="titulo-modulos" style="max-width: 15ch;">Los modulos vuelven visible que entra al sistema y que sale como EFR.</h2>
+
+            <div class="module-grid" style="margin-top: 26px;">
+              <div class="value-card">
+                <strong>Modulo 1 · Audiograma</strong>
+                <p>Ingreso de umbrales y contexto del sujeto.</p>
+              </div>
+              <div class="value-card">
+                <strong>Modulo 2 · Estimulo</strong>
+                <p>Diseno del sonido que activa la simulacion.</p>
+              </div>
+              <div class="value-card">
+                <strong>Modulo 3 · Simulacion</strong>
+                <p>Modelo auditivo que transforma entrada en respuesta.</p>
+              </div>
+              <div class="value-card">
+                <strong>Modulo 4 · EFR</strong>
+                <p>Curva y metricas para comparar condiciones.</p>
+              </div>
+            </div>
+
+            <div class="flow-large" aria-label="Relacion entre modulos">
+              <span class="tag">Audiograma</span>
+              <span class="arrow">→</span>
+              <span class="tag">Estimulo</span>
+              <span class="arrow">→</span>
+              <span class="tag">Simulacion</span>
+              <span class="arrow">→</span>
+              <span class="tag">EFR</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-6" aria-labelledby="titulo-simulacion">
+      <div class="slide-shell">
+        <div class="slide-grid">
+          <article class="panel">
+            <div class="eyebrow">Slide 06 · nueva simulacion</div>
+            <h2 id="titulo-simulacion">La pantalla de nueva simulacion deja ver que el experimento no nace de la nada.</h2>
+            <ul class="bullet-list">
+              <li>Presenta el caso y sus condiciones antes de correr cualquier modelo.</li>
+              <li>Expone los parametros clave del estimulo con lenguaje legible.</li>
+              <li>Permite justificar el contexto experimental en la misma vista.</li>
+            </ul>
+
+            <div class="callout" style="margin-top: 18px;">
+              <strong>Por que este slide importa</strong>
+              <p>
+                Es el mejor momento para mostrar que la plataforma no es solo de salida; tambien estructura la decision metodologica previa.
+              </p>
+            </div>
+          </article>
+
+          <aside class="diagram">
+            <div class="mini">mockup de formulario</div>
+            <div class="diagram-title">Vista de configuracion</div>
+            <svg viewBox="0 0 620 420" role="img" aria-label="Mockup de nueva simulacion">
+              <rect x="20" y="18" width="580" height="384" rx="30" fill="#ffffff" stroke="#d7e1e5"></rect>
+              <rect x="48" y="52" width="250" height="54" rx="16" fill="#f7fafb" stroke="#d7e1e5"></rect>
+              <rect x="322" y="52" width="250" height="54" rx="16" fill="#f7fafb" stroke="#d7e1e5"></rect>
+              <rect x="48" y="126" width="250" height="54" rx="16" fill="#f7fafb" stroke="#d7e1e5"></rect>
+              <rect x="322" y="126" width="250" height="54" rx="16" fill="#f7fafb" stroke="#d7e1e5"></rect>
+              <rect x="48" y="200" width="524" height="126" rx="22" fill="#f7fafb" stroke="#d7e1e5"></rect>
+              <rect x="48" y="346" width="170" height="34" rx="999" fill="#163945"></rect>
+              <rect x="234" y="346" width="162" height="34" rx="999" fill="#eef3f5" stroke="#d7e1e5"></rect>
+              <g fill="#163945" font-family="Trebuchet MS, Segoe UI, sans-serif" font-size="14">
+                <text x="66" y="84">Caso: PT-014</text>
+                <text x="340" y="84">Protocolo: EFR AM 120 Hz</text>
+                <text x="66" y="158">Intensidad: 65 dB SPL</text>
+                <text x="340" y="158">Portadora: 4 kHz</text>
+                <text x="66" y="228">Audiograma cargado y notas del caso</text>
+              </g>
+              <path d="M90 286 L146 274 L202 280 L258 294 L314 308 L370 324 L426 338 L482 348" fill="none" stroke="#163945" stroke-width="4" stroke-linecap="round"></path>
+              <g fill="#163945">
+                <circle cx="90" cy="286" r="5"></circle>
+                <circle cx="146" cy="274" r="5"></circle>
+                <circle cx="202" cy="280" r="5"></circle>
+                <circle cx="258" cy="294" r="5"></circle>
+                <circle cx="314" cy="308" r="5"></circle>
+                <circle cx="370" cy="324" r="5"></circle>
+                <circle cx="426" cy="338" r="5"></circle>
+                <circle cx="482" cy="348" r="5"></circle>
+              </g>
+              <g fill="#ffffff" font-family="Trebuchet MS, Segoe UI, sans-serif" font-size="13">
+                <text x="88" y="368">Lanzar simulacion</text>
+              </g>
+            </svg>
+            <div class="legend">El formulario se muestra como pieza metodologica, no como interfaz comercial.</div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-7" aria-labelledby="titulo-resultados">
+      <div class="slide-shell">
+        <div class="slide-grid single">
+          <article class="panel">
+            <div class="eyebrow">Slide 07 · resultados</div>
+            <h2 id="titulo-resultados" style="max-width: 16ch;">Los resultados deben ser leibles en segundos: curva, metricas y comparacion.</h2>
+
+            <div class="result-grid" style="margin-top: 18px;">
+              <div class="diagram dark">
+                <div class="mini">visual principal</div>
+                <div class="diagram-title">Curva EFR simulada</div>
+                <svg viewBox="0 0 720 320" role="img" aria-label="Curva EFR simulada y referencia">
+                  <defs>
+                    <linearGradient id="goldFillSlide" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#c89b47" stop-opacity="0.34"></stop>
+                      <stop offset="100%" stop-color="#c89b47" stop-opacity="0"></stop>
+                    </linearGradient>
+                  </defs>
+                  <g stroke="rgba(255,255,255,0.12)" stroke-width="1">
+                    <line x1="72" y1="42" x2="72" y2="258"></line>
+                    <line x1="72" y1="258" x2="660" y2="258"></line>
+                    <line x1="72" y1="204" x2="660" y2="204"></line>
+                    <line x1="72" y1="150" x2="660" y2="150"></line>
+                    <line x1="72" y1="96" x2="660" y2="96"></line>
+                  </g>
+                  <path d="M72 218 C122 238, 168 112, 214 138 C250 158, 294 232, 336 206 C380 178, 422 88, 468 116 C506 140, 550 236, 592 196 C620 170, 638 122, 660 108 L660 258 L72 258 Z" fill="url(#goldFillSlide)"></path>
+                  <path d="M72 218 C122 238, 168 112, 214 138 C250 158, 294 232, 336 206 C380 178, 422 88, 468 116 C506 140, 550 236, 592 196 C620 170, 638 122, 660 108" fill="none" stroke="#c89b47" stroke-width="5" stroke-linecap="round"></path>
+                  <path d="M72 226 C120 206, 164 172, 210 186 C248 196, 292 214, 336 190 C380 164, 424 132, 468 146 C512 160, 556 178, 660 148" fill="none" stroke="#87c4bc" stroke-width="3" stroke-dasharray="10 8" stroke-linecap="round"></path>
+                  <g fill="#eef6f8" font-family="Trebuchet MS, Segoe UI, sans-serif" font-size="12">
+                    <text x="64" y="282">0 ms</text>
+                    <text x="624" y="282">200 ms</text>
+                    <text x="36" y="98">alta</text>
+                    <text x="36" y="258">baja</text>
+                  </g>
+                </svg>
+                <div class="legend">Ambar: caso simulado. Verde punteado: referencia de cohorte control.</div>
+              </div>
+
+              <div class="two-col">
+                <div class="result-card">
+                  <h3>Indicadores clave</h3>
+                  <div class="stack">
+                    <div class="metric">
+                      <strong>0.41 uV</strong>
+                      <p>amplitud EFR del caso</p>
+                    </div>
+                    <div class="metric">
+                      <strong>0.63</strong>
+                      <p>phase locking index</p>
+                    </div>
+                    <div class="metric">
+                      <strong>37 ms</strong>
+                      <p>latencia aparente</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="result-card">
+                  <h3>Lectura rapida</h3>
+                  <ul class="bullet-list" style="margin-top: 0;">
+                    <li>La respuesta es detectable pero menos robusta que la referencia.</li>
+                    <li>La diferencia se puede explicar con alteracion temporal leve a moderada.</li>
+                    <li>La comparacion visual ayuda a defender la hipotesis frente a la profesora.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-8" aria-labelledby="titulo-ia">
+      <div class="slide-shell">
+        <div class="slide-grid single">
+          <article class="panel">
+            <div class="eyebrow">Slide 08 · IA y papers</div>
+            <h2 id="titulo-ia" style="max-width: 18ch;">La IA aparece como apoyo interpretativo, no como reemplazo del criterio cientifico.</h2>
+
+            <div class="paper-grid" style="margin-top: 18px;">
+              <div class="paper">
+                <strong>Lectura preliminar del caso</strong>
+                <p>La plataforma resume el patron observado y sugiere una explicacion plausible a partir de las metricas.</p>
+              </div>
+              <div class="paper">
+                <strong>Relacion con bibliografia</strong>
+                <p>Se enlazan papers que dialogan con el tipo de hallazgo o con el biomarcador en cuestion.</p>
+              </div>
+              <div class="paper">
+                <strong>Preguntas siguientes</strong>
+                <p>La salida orienta que conviene validar despues: otro protocolo, otra cohorte o contraste empirico.</p>
+              </div>
+              <div class="paper">
+                <strong>Limite explicitado</strong>
+                <p>La interpretacion sigue siendo una ayuda; la conclusion final es siempre del equipo investigador.</p>
+              </div>
+            </div>
+
+            <div class="quote" style="margin-top: 18px;">
+              <div class="quote-mark">“</div>
+              <p>
+                La IA tiene valor cuando reduce tiempo de lectura y conecta evidencia, no cuando pretende decidir sola sobre el significado del caso.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-9" aria-labelledby="titulo-valor">
+      <div class="slide-shell">
+        <div class="slide-grid single">
+          <article class="panel">
+            <div class="eyebrow">Slide 09 · cierre</div>
+            <h2 id="titulo-valor" style="max-width: 17ch;">El valor academico esta en hacer visible una arquitectura de investigacion, no solo una interfaz.</h2>
+
+            <div class="value-grid" style="margin-top: 18px;">
+              <div class="value-card">
+                <strong>Integra capas separadas</strong>
+                <p>Une audiograma, estimulo, simulacion y lectura en un mismo entorno.</p>
+              </div>
+              <div class="value-card">
+                <strong>Mejora la trazabilidad</strong>
+                <p>Permite justificar como se construyo un caso y por que se interpreta asi.</p>
+              </div>
+              <div class="value-card">
+                <strong>Facilita comparar</strong>
+                <p>Sirve para contrastar cohortes, protocolos y escenarios experimentales.</p>
+              </div>
+              <div class="value-card">
+                <strong>Hace mas didactica la defensa</strong>
+                <p>La profesora puede seguir la logica del sistema slide por slide.</p>
+              </div>
+              <div class="value-card">
+                <strong>Abre camino a validacion futura</strong>
+                <p>La propuesta queda lista para crecer hacia evidencia empirica y herramientas reales.</p>
+              </div>
+              <div class="value-card">
+                <strong>Funciona como pieza academica</strong>
+                <p>Ordena hipotesis, metodologia, resultados y discusion en una narrativa coherente.</p>
+              </div>
+            </div>
+
+            <div class="footer-note">
+              Archivo standalone listo para navegador. Todo valor numerico o bibliografico es ilustrativo y esta presentado como mockup.
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
