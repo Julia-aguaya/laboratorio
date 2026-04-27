@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0" version="29.5.2">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0">
   <diagram name="Página-1" id="O0m-KKsQgSCORNYI77WB">
-    <mxGraphModel dx="2249" dy="778" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -284,16 +284,16 @@
           <mxGeometry height="52" width="160" y="88" as="geometry" />
         </mxCell>
         <mxCell id="F2E_OX0NonPDHAqdmdab-115" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Stimulus" vertex="1">
-          <mxGeometry height="236" width="160" x="310" y="1674" as="geometry" />
+          <mxGeometry height="250" width="160" x="310" y="1674" as="geometry" />
         </mxCell>
         <mxCell id="F2E_OX0NonPDHAqdmdab-116" parent="F2E_OX0NonPDHAqdmdab-115" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;div&gt;-&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;type: enum (RAM, click, toneburst, chirp, custom)&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;-&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;sampling_rate: float&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;&lt;div style=&quot;&quot;&gt;- duration: float&lt;/div&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;pre&gt;&lt;div style=&quot;font-family: Helvetica; white-space: normal;&quot;&gt;- intensity: float (dB SPL)&lt;/div&gt;&lt;div style=&quot;font-family: Helvetica; white-space: normal;&quot;&gt;- carrier_frequency: float (Hz, si aplica)&lt;/div&gt;&lt;div style=&quot;font-family: Helvetica; white-space: normal;&quot;&gt;- modulation_frequency: float (Hz, si aplica)&lt;/div&gt;&lt;div style=&quot;position: absolute; left: -9999px;&quot;&gt;- duration: float&lt;br&gt;- metadata: JSON&lt;br&gt;- created_at: datetime&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="140" width="160" y="26" as="geometry" />
+          <mxGeometry height="154" width="160" y="26" as="geometry" />
         </mxCell>
         <mxCell id="F2E_OX0NonPDHAqdmdab-117" parent="F2E_OX0NonPDHAqdmdab-115" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
-          <mxGeometry height="8" width="160" y="166" as="geometry" />
+          <mxGeometry height="8" width="160" y="180" as="geometry" />
         </mxCell>
         <mxCell id="F2E_OX0NonPDHAqdmdab-118" parent="F2E_OX0NonPDHAqdmdab-115" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ load()&lt;/div&gt;&lt;div&gt;+ validate()&lt;/div&gt;&lt;div&gt;+ getEnvelope()&lt;/div&gt;" vertex="1">
-          <mxGeometry height="62" width="160" y="174" as="geometry" />
+          <mxGeometry height="62" width="160" y="188" as="geometry" />
         </mxCell>
         <mxCell id="F2E_OX0NonPDHAqdmdab-129" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Report" vertex="1">
           <mxGeometry height="230" width="180" x="506" y="1680" as="geometry" />
